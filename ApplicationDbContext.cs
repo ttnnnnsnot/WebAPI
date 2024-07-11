@@ -14,15 +14,5 @@ namespace WebAPI
         {
             return Database.GetDbConnection();
         }
-
-        public async Task OpenConnectionAsync()
-        {
-            await Database.OpenConnectionAsync();
-        }
-
-        public async Task CloseConnectionAsync()
-        {
-            await Database.CloseConnectionAsync();
-        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace WebAPI;
 
@@ -14,47 +16,59 @@ public class StoredProcedureService : IStoredProcedureService
 
     public async Task<List<List<Dictionary<string, object>>>> ExecuteStoredProcedureAsync(string spName, Dictionary<string, string> parameters)
     {
+        var result = new List<List<Dictionary<string, object>>>();
         var parameterString = string.Join(", ", parameters.Select(p => $"@{p.Key}=@{p.Key}"));
         var sql = $"EXEC {spName} {parameterString}";
 
-        var result = new List<List<Dictionary<string, object>>>();
-        using (var command = _dbcontext.GetDbConnection().CreateCommand())
+        using (var connection = _dbcontext.Database.GetDbConnection())
         {
-            command.CommandText = sql;
-            command.CommandType = System.Data.CommandType.Text;
-
-            foreach (var param in parameters)
+            using (var command = connection.CreateCommand())
             {
-                var parameter = command.CreateParameter();
-                parameter.ParameterName = param.Key;
-                parameter.Value = param.Value;
-                command.Parameters.Add(parameter);
-            }
+                command.CommandText = sql;
+                command.CommandType = CommandType.Text;
 
-            await _dbcontext.OpenConnectionAsync();
-
-            using (var reader = await command.ExecuteReaderAsync())
-            {
-                do
+                foreach (var param in parameters)
                 {
-                    var table = new List<Dictionary<string, object>>();
-                    while (await reader.ReadAsync())
+                    command.Parameters.Add(new SqlParameter(param.Key, param.Value));
+                }
+
+                try
+                {
+                    await connection.OpenAsync();
+
+                    using (var reader = await command.ExecuteReaderAsync())
                     {
-                        var row = new Dictionary<string, object>();
-                        for (int i = 0; i < reader.FieldCount; i++)
+                        do
                         {
-                            row[reader.GetName(i)] = reader.GetValue(i);
-                        }
-                        table.Add(row);
-                    }
-                    result.Add(table);
-                } while (await reader.NextResultAsync());
-            }
+                            var table = new List<Dictionary<string, object>>();
+                            var columnSchema = await reader.GetColumnSchemaAsync();
 
-            await _dbcontext.CloseConnectionAsync();
-        }
-
-        return result;
+                            while (await reader.ReadAsync())
+                            {
+                                var row = new Dictionary<string, object>(reader.FieldCount);
+                                foreach (var column in columnSchema)
+                                {
+#pragma warning disable CS8601 // 可能有 Null 參考指派。
+                                    int ordinal = reader.GetOrdinal(column.ColumnName);
+                                    row[column.ColumnName] = reader.IsDBNull(ordinal)
+                                        ? null
+                                        : reader.GetValue(ordinal);
+#pragma warning restore CS8601 // 可能有 Null 參考指派。
+                                }
+                                table.Add(row);
+                            }
+                            result.Add(table);
+                        } while (await reader.NextResultAsync());
+                    };                    
+                }
+                finally
+                {
+                    if (connection.State == ConnectionState.Open)
+                        await connection.CloseAsync();
+                }
+            };
+        };
         
+        return result;
     }
 }
