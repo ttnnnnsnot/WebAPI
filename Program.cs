@@ -20,7 +20,7 @@ builder.Services.AddSingleton<ILoggerService, LoggerService>();
 
 var app = builder.Build();
 
-app.MapGet("/", () => Results.Ok(connectionString));
+app.MapGet("/", () => Results.Ok());
 
 app.MapPost("/execute", async (StoredProcedureRequest request, MyRepository repository, IResultFormatter resultformatter, ILoggerService logger) =>
 {
