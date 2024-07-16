@@ -15,18 +15,14 @@ public class JsonResultFormatter : IResultFormatter
         return Results.Json(DefaultResult());
     }
 
-    public IResult FormatResult(List<List<Dictionary<string, object>>> data)
+    public IResult FormatResult(ResMessage data)
     {
         var result = DefaultResult();
 
-        if (data != null && data.Any())
+        if (data != null && data.Msg.Count != 0 )
         {
             ((Dictionary<string, bool>)result["resultmsg"])["msg"] = true;
-
-            for (int i = 0; i < data.Count; i++)
-            {
-                result[$"table{i + 1}"] = data[i];
-            }
+            result["data"] = data.Msg;
         }
 
         return Results.Json(result);

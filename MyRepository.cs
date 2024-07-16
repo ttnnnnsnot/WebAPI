@@ -18,7 +18,7 @@ public class MyRepository
         try
         {
             var result = await _storedProcedureService.ExecuteStoredProcedureAsync(spName, parameters);
-            return result.Count != 0 ? _resultFormatter.FormatResult(result) : _resultFormatter.FormatDefaultResult();
+            return result.Msg.Count != 0 ? _resultFormatter.FormatResult(result) : _resultFormatter.FormatDefaultResult();
         }
         catch(Exception ex)
         {

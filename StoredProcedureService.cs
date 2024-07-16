@@ -14,9 +14,9 @@ public class StoredProcedureService : IStoredProcedureService
         _loggerService = loggerService;
     }
 
-    public async Task<List<List<Dictionary<string, object>>>> ExecuteStoredProcedureAsync(string spName, Dictionary<string, string> parameters)
+    public async Task<ResMessage> ExecuteStoredProcedureAsync(string spName, Dictionary<string, string> parameters)
     {
-        var result = new List<List<Dictionary<string, object>>>();
+        var result = new ResMessage();
         var parameterString = string.Join(", ", parameters.Select(p => $"@{p.Key}=@{p.Key}"));
         var sql = $"EXEC {spName} {parameterString}";
 
@@ -57,7 +57,7 @@ public class StoredProcedureService : IStoredProcedureService
                                 }
                                 table.Add(row);
                             }
-                            result.Add(table);
+                            result.Msg.Add(table);
                         } while (await reader.NextResultAsync());
                     };                    
                 }

@@ -2,6 +2,6 @@
 
 public interface IResultFormatter
 {
-    IResult FormatResult(List<List<Dictionary<string, object>>> data);
+    IResult FormatResult(ResMessage data);
     IResult FormatDefaultResult();
 }
