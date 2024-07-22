@@ -1,17 +1,38 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Data.Common;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebAPI;
 
 public class StoredProcedureService : IStoredProcedureService
 {
+    private readonly AppSettings _appSettings;
     private readonly ApplicationDbContext _dbcontext;
     private readonly ILoggerService _loggerService;
-    public StoredProcedureService(ApplicationDbContext dbcontext, ILoggerService loggerService)
+    public StoredProcedureService(ApplicationDbContext dbcontext, ILoggerService loggerService, AppSettings appSettings)
     {
         _dbcontext = dbcontext;
         _loggerService = loggerService;
+        _appSettings = appSettings;
+    }
+
+    private async Task<bool> OpenConnectWaitTime(DbConnection dbConnection)
+    {
+        var cts = new CancellationTokenSource();
+        cts.CancelAfter(_appSettings.ConnectionOpenWaitTime);
+
+        try
+        {
+            await dbConnection.OpenAsync(cts.Token);
+            return true; // Connection opened successfully
+        }
+        catch (OperationCanceledException)
+        {
+            // Connection opening timed out
+            return false;
+        }
     }
 
     public async Task<ResMessage> ExecuteStoredProcedureAsync(string spName, Dictionary<string, string> parameters)
@@ -34,32 +55,33 @@ public class StoredProcedureService : IStoredProcedureService
 
                 try
                 {
-                    await connection.OpenAsync();
-
-                    using (var reader = await command.ExecuteReaderAsync())
+                    if (await OpenConnectWaitTime(connection))
                     {
-                        do
+                        using (var reader = await command.ExecuteReaderAsync())
                         {
-                            var table = new List<Dictionary<string, object>>();
-                            var columnSchema = await reader.GetColumnSchemaAsync();
-
-                            while (await reader.ReadAsync())
+                            do
                             {
-                                var row = new Dictionary<string, object>(reader.FieldCount);
-                                foreach (var column in columnSchema)
+                                var table = new List<Dictionary<string, object>>();
+                                var columnSchema = await reader.GetColumnSchemaAsync();
+
+                                while (await reader.ReadAsync())
                                 {
+                                    var row = new Dictionary<string, object>(reader.FieldCount);
+                                    foreach (var column in columnSchema)
+                                    {
 #pragma warning disable CS8601 // 可能有 Null 參考指派。
-                                    int ordinal = reader.GetOrdinal(column.ColumnName);
-                                    row[column.ColumnName] = reader.IsDBNull(ordinal)
-                                        ? null
-                                        : reader.GetValue(ordinal);
+                                        int ordinal = reader.GetOrdinal(column.ColumnName);
+                                        row[column.ColumnName] = reader.IsDBNull(ordinal)
+                                            ? null
+                                            : reader.GetValue(ordinal);
 #pragma warning restore CS8601 // 可能有 Null 參考指派。
+                                    }
+                                    table.Add(row);
                                 }
-                                table.Add(row);
-                            }
-                            result.Msg.Add(table);
-                        } while (await reader.NextResultAsync());
-                    };                    
+                                result.Msg.Add(table);
+                            } while (await reader.NextResultAsync());
+                        };
+                    }               
                 }
                 finally
                 {
