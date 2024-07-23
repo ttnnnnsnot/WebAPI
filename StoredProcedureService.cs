@@ -2,26 +2,23 @@
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Data.Common;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebAPI;
 
 public class StoredProcedureService : IStoredProcedureService
 {
-    private readonly AppSettings _appSettings;
     private readonly ApplicationDbContext _dbcontext;
     private readonly ILoggerService _loggerService;
-    public StoredProcedureService(ApplicationDbContext dbcontext, ILoggerService loggerService, AppSettings appSettings)
+    public StoredProcedureService(ApplicationDbContext dbcontext, ILoggerService loggerService)
     {
         _dbcontext = dbcontext;
         _loggerService = loggerService;
-        _appSettings = appSettings;
     }
 
     private async Task<bool> OpenConnectWaitTime(DbConnection dbConnection)
     {
         var cts = new CancellationTokenSource();
-        cts.CancelAfter(_appSettings.ConnectionOpenWaitTime);
+        cts.CancelAfter(AppSettings.ConnectionOpenWaitTime);
 
         try
         {
@@ -35,20 +32,18 @@ public class StoredProcedureService : IStoredProcedureService
         }
     }
 
-    public async Task<ResMessage> ExecuteStoredProcedureAsync(string spName, Dictionary<string, string> parameters)
+    public async Task<ResMessage> ExecuteStoredProcedureAsync(StoredProcedureRequest request)
     {
         var result = new ResMessage();
-        var parameterString = string.Join(", ", parameters.Select(p => $"@{p.Key}=@{p.Key}"));
-        var sql = $"EXEC {spName} {parameterString}";
 
         using (var connection = _dbcontext.Database.GetDbConnection())
         {
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = sql;
-                command.CommandType = CommandType.Text;
+                command.CommandText = request.ProcedureName;
+                command.CommandType = CommandType.StoredProcedure;
 
-                foreach (var param in parameters)
+                foreach (var param in request.Parameters)
                 {
                     command.Parameters.Add(new SqlParameter(param.Key, param.Value));
                 }
@@ -78,7 +73,7 @@ public class StoredProcedureService : IStoredProcedureService
                                     }
                                     table.Add(row);
                                 }
-                                result.Msg.Add(table);
+                                result.Result.Add(table);
                             } while (await reader.NextResultAsync());
                         };
                     }               

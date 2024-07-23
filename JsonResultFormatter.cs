@@ -19,10 +19,10 @@ public class JsonResultFormatter : IResultFormatter
     {
         var result = DefaultResult();
 
-        if (data != null && data.Msg.Count != 0 )
+        if (data != null && data.Result.Count != 0 )
         {
             ((Dictionary<string, bool>)result["resultmsg"])["msg"] = true;
-            result["data"] = data.Msg;
+            result["data"] = data.Result;
         }
 
         return Results.Json(result);

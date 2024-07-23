@@ -10,33 +10,31 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7) // 每日滾動新文件
     .CreateLogger();
 
-var aps = new AppSettings();
-aps.DefaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
-aps.CommectionTimeOut = Convert.ToInt32(builder.Configuration.GetConnectionString("CommectionTimeOut"));
-aps.ConnectionOpenWaitTime = TimeSpan.FromSeconds(Convert.ToInt32(builder.Configuration.GetConnectionString("ConnectionOpenWaitTime"))); 
+// 設置 AppSettings
+AppSettings.DefaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+AppSettings.CommectionTimeOut = Convert.ToInt32(builder.Configuration.GetConnectionString("CommectionTimeOut"));
+AppSettings.ConnectionOpenWaitTime = TimeSpan.FromSeconds(Convert.ToInt32(builder.Configuration.GetConnectionString("ConnectionOpenWaitTime"))); 
 
+// 設定 DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(aps.DefaultConnection, 
-    sqlServerOptions => sqlServerOptions.CommandTimeout(aps.CommectionTimeOut)));
+    options.UseSqlServer(AppSettings.DefaultConnection, 
+    sqlServerOptions => sqlServerOptions.CommandTimeout(AppSettings.CommectionTimeOut)));
 
-builder.Services.AddScoped<AppSettings>();
+// 設定服務
+builder.Services.AddScoped<MyRepository>();
 builder.Services.AddScoped<IStoredProcedureService, StoredProcedureService>();
 builder.Services.AddScoped<IResultFormatter, JsonResultFormatter>();
-builder.Services.AddScoped<MyRepository>();
 builder.Services.AddSingleton<ILoggerService, LoggerService>();
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
 app.MapGet("/", () => Results.Ok());
 
-app.MapPost("/execute", async (StoredProcedureRequest request, MyRepository repository, IResultFormatter resultformatter, ILoggerService logger) =>
-{
-    if (request == null || string.IsNullOrEmpty(request.ProcedureName) || request.Parameters == null)
-    {
-        return resultformatter.FormatDefaultResult();
-    }
 
-    return await repository.ExecuteStoredProcedureAsync(request.ProcedureName, request.Parameters);
+app.MapPost("/execute", async (HttpContext context, MyRepository repository) =>
+{
+    return await repository.ExecuteStoredProcedureAsync(context);
 });
 
 app.Run();

@@ -2,10 +2,10 @@
 
 public interface IStoredProcedureService
 {
-    Task<ResMessage> ExecuteStoredProcedureAsync(string spName, Dictionary<string, string> parameters);
+    Task<ResMessage> ExecuteStoredProcedureAsync(StoredProcedureRequest request);
 }
 
 public class ResMessage
 {
-    public List<List<Dictionary<string, object>>> Msg { get; set; } = new List<List<Dictionary<string, object>>>();
+    public List<List<Dictionary<string, object>>> Result { get; set; } = new List<List<Dictionary<string, object>>>();
 }

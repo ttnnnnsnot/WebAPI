@@ -1,8 +1,8 @@
 ﻿namespace WebAPI;
 
-public class AppSettings
+public static class AppSettings
 {
-    public string? DefaultConnection { get; set; }
-    public TimeSpan ConnectionOpenWaitTime { get; set; } = TimeSpan.FromMilliseconds(200);
-    public int CommectionTimeOut { get; set; } = 30;
+    public static string? DefaultConnection { get; set; }
+    public static TimeSpan ConnectionOpenWaitTime { get; set; } = TimeSpan.FromMilliseconds(200);
+    public static int CommectionTimeOut { get; set; } = 30;
 }

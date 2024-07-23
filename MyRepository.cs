@@ -13,17 +13,48 @@ public class MyRepository
         _logger = logger;
     }
 
-    public async Task<IResult> ExecuteStoredProcedureAsync(string spName, Dictionary<string, string> parameters)
+    private async Task<StoredProcedureRequest> CheckHttpContext(HttpContext content)
     {
+        var resultDefault = new StoredProcedureRequest();
+        if (content.Request.ContentLength == 0)
+        {
+            return resultDefault;
+        }
+
+        var request = await content.Request.ReadFromJsonAsync<StoredProcedureRequest>();
+
+        if (request == null)
+        {
+            return resultDefault;
+        }
+
+        if (string.IsNullOrEmpty(request.ProcedureName) || request.Parameters == null)
+        {
+            return resultDefault;
+        }
+
+        return request;
+    }
+
+    public async Task<IResult> ExecuteStoredProcedureAsync(HttpContext content)
+    {
+        var resultDefault = _resultFormatter.FormatDefaultResult();
+        var request = await CheckHttpContext(content);
+        if (string.IsNullOrEmpty(request.ProcedureName))
+        {
+            return resultDefault;
+        }
+
         try
         {
-            var result = await _storedProcedureService.ExecuteStoredProcedureAsync(spName, parameters);
-            return result.Msg.Count != 0 ? _resultFormatter.FormatResult(result) : _resultFormatter.FormatDefaultResult();
+            var result = await _storedProcedureService.ExecuteStoredProcedureAsync(request);
+
+            return result.Result.Count != 0 ? _resultFormatter.FormatResult(result) : resultDefault;
         }
         catch(Exception ex)
         {
-            _logger.LogError(spName, ex);
-            return _resultFormatter.FormatDefaultResult();
+            _logger.LogError(request.ProcedureName, ex);
+            return resultDefault;
         }
     }
 }

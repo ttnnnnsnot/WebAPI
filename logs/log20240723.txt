@@ -1,0 +1,59 @@
+2024-07-23 20:57:50.870 +08:00 [ERR] UserList
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'Id'.
+Invalid column name 'Id'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__195_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 55
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 85
+   at WebAPI.MyRepository.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\MyRepository.cs:line 29
+ClientConnectionId:1e2cb762-b1ce-4996-9d10-4a68dafd3ecd
+Error Number:207,State:1,Class:16
+2024-07-23 20:57:54.083 +08:00 [ERR] UserList
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'Id'.
+Invalid column name 'Id'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__195_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 55
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 85
+   at WebAPI.MyRepository.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\MyRepository.cs:line 29
+ClientConnectionId:1e2cb762-b1ce-4996-9d10-4a68dafd3ecd
+Error Number:207,State:1,Class:16
+2024-07-23 20:59:46.769 +08:00 [ERR] UserList
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'Id'.
+Invalid column name 'Id'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__195_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 55
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 85
+   at WebAPI.MyRepository.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\MyRepository.cs:line 33
+ClientConnectionId:a3eca259-7650-4d1c-bd16-078ec3728637
+Error Number:207,State:1,Class:16
+2024-07-23 21:19:15.919 +08:00 [ERR] ProductList1
+Microsoft.Data.SqlClient.SqlException (0x80131904): Could not find stored procedure 'ProductList1'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__195_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 55
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 85
+   at WebAPI.MyRepository.ExecuteStoredProcedureAsync(HttpContext content) in D:\MySource\WebAPISource\WebAPI\MyRepository.cs:line 52
+ClientConnectionId:40f09dad-af85-4abb-a290-5bde9e4226b1
+Error Number:2812,State:62,Class:16
