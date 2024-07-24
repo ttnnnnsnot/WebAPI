@@ -32,9 +32,9 @@ public class StoredProcedureService : IStoredProcedureService
         }
     }
 
-    public async Task<ResMessage> ExecuteStoredProcedureAsync(StoredProcedureRequest request)
+    public async Task<ResultData> ExecuteStoredProcedureAsync(StoredProcedureRequest request)
     {
-        var result = new ResMessage();
+        var result = new ResultData();
 
         using (var connection = _dbcontext.Database.GetDbConnection())
         {
@@ -73,7 +73,7 @@ public class StoredProcedureService : IStoredProcedureService
                                     }
                                     table.Add(row);
                                 }
-                                result.Result.Add(table);
+                                result.Data.Add(table);
                             } while (await reader.NextResultAsync());
                         };
                     }               

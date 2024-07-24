@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebAPI;
 using Serilog;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +25,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // 設定服務
 builder.Services.AddScoped<MyRepository>();
 builder.Services.AddScoped<IStoredProcedureService, StoredProcedureService>();
-builder.Services.AddScoped<IResultFormatter, JsonResultFormatter>();
 builder.Services.AddSingleton<ILoggerService, LoggerService>();
 
 var app = builder.Build();

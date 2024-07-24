@@ -1,14 +1,15 @@
-﻿namespace WebAPI;
+﻿using Microsoft.Extensions.Options;
+using System.Text.Json;
+
+namespace WebAPI;
 
 public class MyRepository
 {
     private readonly IStoredProcedureService _storedProcedureService;
-    private readonly IResultFormatter _resultFormatter;
     private readonly ILoggerService _logger;
 
-    public MyRepository(IResultFormatter resultFormatter, IStoredProcedureService storedProcedureService, ILoggerService logger)
+    public MyRepository(IStoredProcedureService storedProcedureService, ILoggerService logger)
     {
-        _resultFormatter = resultFormatter;
         _storedProcedureService = storedProcedureService;
         _logger = logger;
     }
@@ -21,7 +22,7 @@ public class MyRepository
             return resultDefault;
         }
 
-        var request = await content.Request.ReadFromJsonAsync<StoredProcedureRequest>();
+        var request = await content.Request.ReadFromJsonAsync<StoredProcedureRequest>(GlobalJsonSerializerOptions.Default);
 
         if (request == null)
         {
@@ -36,25 +37,35 @@ public class MyRepository
         return request;
     }
 
+    private IResult ResultsJson<T>(T request)
+    {
+        return Results.Json(request, GlobalJsonSerializerOptions.Default);
+    }
+
     public async Task<IResult> ExecuteStoredProcedureAsync(HttpContext content)
     {
-        var resultDefault = _resultFormatter.FormatDefaultResult();
+        var resultDefault = new ResultData();
         var request = await CheckHttpContext(content);
         if (string.IsNullOrEmpty(request.ProcedureName))
         {
-            return resultDefault;
+            return ResultsJson(resultDefault);
         }
 
         try
         {
-            var result = await _storedProcedureService.ExecuteStoredProcedureAsync(request);
+            ResultData result = await _storedProcedureService.ExecuteStoredProcedureAsync(request);
 
-            return result.Result.Count != 0 ? _resultFormatter.FormatResult(result) : resultDefault;
+            if (result.Data.Count > 0)
+            {
+                result.resultMessage.Msg = true;
+            }
+
+            return ResultsJson(result);
         }
         catch(Exception ex)
         {
             _logger.LogError(request.ProcedureName, ex);
-            return resultDefault;
+            return ResultsJson(resultDefault);
         }
     }
 }
