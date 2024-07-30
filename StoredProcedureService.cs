@@ -73,7 +73,12 @@ public class StoredProcedureService : IStoredProcedureService
                                     }
                                     table.Add(row);
                                 }
-                                result.Data.Add(table);
+
+                                if(table.Count > 0)
+                                {
+                                    result.Data.Add(table);
+                                }
+
                             } while (await reader.NextResultAsync());
                         };
                     }               

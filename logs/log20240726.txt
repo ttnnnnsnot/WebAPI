@@ -1,0 +1,24 @@
+2024-07-26 17:47:58.610 +08:00 [ERR] ProductList
+System.ArgumentException: 物件型別 System.Text.Json.JsonElement 與已知的管理提供者原始型別之間並無對應。
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__195_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 55
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 85
+   at WebAPI.MyRepository.ExecuteStoredProcedureAsync(HttpContext content) in D:\MySource\WebAPISource\WebAPI\MyRepository.cs:line 56
+2024-07-26 17:48:13.376 +08:00 [ERR] ProductList
+System.ArgumentException: 物件型別 System.Text.Json.JsonElement 與已知的管理提供者原始型別之間並無對應。
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__195_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 55
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 85
+   at WebAPI.MyRepository.ExecuteStoredProcedureAsync(HttpContext content) in D:\MySource\WebAPISource\WebAPI\MyRepository.cs:line 56
