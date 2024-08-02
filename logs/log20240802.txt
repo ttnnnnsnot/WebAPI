@@ -1,0 +1,57 @@
+2024-08-02 17:39:12.753 +08:00 [ERR] MyRepository:ExecuteStoredProcedureAsync
+Microsoft.Data.SqlClient.SqlException (0x80131904): The EXECUTE permission was denied on the object 'ShoppingDetailType', database 'Mvc_Test', schema 'dbo'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__195_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 93
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 128
+   at WebAPI.MyRepository.ExecuteStoredProcedureAsync(HttpContext content) in D:\MySource\WebAPISource\WebAPI\MyRepository.cs:line 62
+ClientConnectionId:f00f9897-bc04-4737-b605-494bc792c3ff
+Error Number:229,State:5,Class:14
+2024-08-02 17:39:29.427 +08:00 [ERR] MyRepository:ExecuteStoredProcedureAsync
+Microsoft.Data.SqlClient.SqlException (0x80131904): Trying to pass a table-valued parameter with 5 column(s) where the corresponding user-defined table type requires 6 column(s).
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__195_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 93
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 128
+   at WebAPI.MyRepository.ExecuteStoredProcedureAsync(HttpContext content) in D:\MySource\WebAPISource\WebAPI\MyRepository.cs:line 62
+ClientConnectionId:f00f9897-bc04-4737-b605-494bc792c3ff
+Error Number:500,State:1,Class:16
+2024-08-02 17:44:33.874 +08:00 [ERR] MyRepository:ExecuteStoredProcedureAsync
+Microsoft.Data.SqlClient.SqlException (0x80131904): Trying to pass a table-valued parameter with 5 column(s) where the corresponding user-defined table type requires 6 column(s).
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__195_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 93
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 128
+   at WebAPI.MyRepository.ExecuteStoredProcedureAsync(HttpContext content) in D:\MySource\WebAPISource\WebAPI\MyRepository.cs:line 62
+ClientConnectionId:e9e6de0c-f44e-43ff-a742-4404f546bcab
+Error Number:500,State:1,Class:16
+2024-08-02 18:09:03.543 +08:00 [ERR] MyRepository:ExecuteStoredProcedureAsync
+Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot insert the value NULL into column 'OrderId', table 'Mvc_Test.dbo.OrderDetail'; column does not allow nulls. INSERT fails.
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__195_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 93
+   at WebAPI.StoredProcedureService.ExecuteStoredProcedureAsync(StoredProcedureRequest request) in D:\MySource\WebAPISource\WebAPI\StoredProcedureService.cs:line 128
+   at WebAPI.MyRepository.ExecuteStoredProcedureAsync(HttpContext content) in D:\MySource\WebAPISource\WebAPI\MyRepository.cs:line 62
+ClientConnectionId:545e36c9-287c-41d7-b8b7-ffcee52947d1
+Error Number:515,State:2,Class:16

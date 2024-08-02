@@ -43,6 +43,44 @@ public class StoredProcedureService : IStoredProcedureService
                 command.CommandText = request.ProcedureName;
                 command.CommandType = CommandType.StoredProcedure;
 
+                // 批次寫入使用TABLE
+                if(!string.IsNullOrEmpty(request.TableTypeName))
+                {
+                    var dataTable = new DataTable();
+
+                    if (request.TableData.Count > 0)
+                    {
+                        // Create columns based on the first item
+                        var firstItem = request.TableData.First();
+                        foreach (var key in firstItem.Keys)
+                        {
+                            dataTable.Columns.Add(key);
+                        }
+
+                        // Populate DataTable with data
+                        foreach (var item in request.TableData)
+                        {
+                            var row = dataTable.NewRow();
+                            foreach (var key in item.Keys)
+                            {
+                                row[key] = item[key].ToString();
+                            }
+                            dataTable.Rows.Add(row);
+                        }
+                    }
+
+                    var tvpParam = new SqlParameter
+                    {
+                        ParameterName = "@DataTable",
+                        SqlDbType = SqlDbType.Structured,
+                        TypeName = request.TableTypeName,
+                        Value = dataTable
+                    };
+
+                    command.Parameters.Add(tvpParam);
+                }
+
+                // 單筆參數
                 foreach (var param in request.Parameters)
                 {
                     command.Parameters.Add(new SqlParameter(param.Key, param.Value));

@@ -34,6 +34,11 @@ public class MyRepository
             return resultDefault;
         }
 
+        if (!string.IsNullOrEmpty(request.TableTypeName) && request.TableData.Count <= 0)
+        {
+            return resultDefault;
+        }
+
         return request;
     }
 
@@ -45,14 +50,15 @@ public class MyRepository
     public async Task<IResult> ExecuteStoredProcedureAsync(HttpContext content)
     {
         var resultDefault = new ResultData();
-        var request = await CheckHttpContext(content);
-        if (string.IsNullOrEmpty(request.ProcedureName))
-        {
-            return ResultsJson(resultDefault);
-        }
 
         try
         {
+            var request = await CheckHttpContext(content);
+            if (string.IsNullOrEmpty(request.ProcedureName))
+            {
+                return ResultsJson(resultDefault);
+            }
+
             ResultData result = await _storedProcedureService.ExecuteStoredProcedureAsync(request);
 
             if (result.Data.Count > 0)
@@ -64,7 +70,7 @@ public class MyRepository
         }
         catch(Exception ex)
         {
-            _logger.LogError(request.ProcedureName, ex);
+            _logger.LogError("MyRepository:ExecuteStoredProcedureAsync", ex);
             return ResultsJson(resultDefault);
         }
     }
