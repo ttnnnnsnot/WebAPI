@@ -15,7 +15,7 @@ Log.Logger = new LoggerConfiguration()
 // 設置 AppSettings
 AppSettings.DefaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
 AppSettings.CommectionTimeOut = Convert.ToInt32(builder.Configuration.GetConnectionString("CommectionTimeOut"));
-AppSettings.ConnectionOpenWaitTime = TimeSpan.FromSeconds(Convert.ToInt32(builder.Configuration.GetConnectionString("ConnectionOpenWaitTime"))); 
+AppSettings.ConnectionOpenWaitTime = TimeSpan.FromMilliseconds(Convert.ToInt32(builder.Configuration.GetConnectionString("ConnectionOpenWaitTime"))); 
 
 // 設定 DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -31,7 +31,6 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.MapGet("/", () => Results.Ok());
-
 
 app.MapPost("/execute", async (HttpContext context, MyRepository repository) =>
 {

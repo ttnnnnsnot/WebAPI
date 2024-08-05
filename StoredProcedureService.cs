@@ -30,6 +30,10 @@ public class StoredProcedureService : IStoredProcedureService
             // Connection opening timed out
             return false;
         }
+        catch
+        {
+            return false;
+        }
     }
 
     public async Task<ResultData> ExecuteStoredProcedureAsync(StoredProcedureRequest request)
